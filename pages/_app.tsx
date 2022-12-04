@@ -7,6 +7,7 @@ import {
 } from "@mantine/core";
 import "../styles/globals.css";
 import { useState } from "react";
+import { VerticalNavbar } from "../components/Common/Navbar";
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
@@ -36,7 +37,10 @@ export default function App(props: AppProps) {
             colorScheme: colorScheme,
           }}
         >
-          <Component {...pageProps} />
+          <div className="flex gap-1">
+            <VerticalNavbar />
+            <Component {...pageProps} />
+          </div>
         </MantineProvider>
       </ColorSchemeProvider>
     </>
