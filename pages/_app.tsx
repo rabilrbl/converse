@@ -3,6 +3,8 @@ import Head from "next/head";
 import {
   ColorScheme,
   ColorSchemeProvider,
+  Container,
+  Flex,
   MantineProvider,
 } from "@mantine/core";
 import "../styles/globals.css";
@@ -37,10 +39,12 @@ export default function App(props: AppProps) {
             colorScheme: colorScheme,
           }}
         >
-          <div className="flex gap-1">
+          <Flex className="w-full">
             <VerticalNavbar />
-            <Component {...pageProps} />
-          </div>
+            <Container>
+              <Component {...pageProps} />
+            </Container>
+          </Flex>
         </MantineProvider>
       </ColorSchemeProvider>
     </>
