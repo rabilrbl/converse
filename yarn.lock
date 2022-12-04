@@ -242,6 +242,21 @@
     "@radix-ui/react-scroll-area" "1.0.0"
     react-textarea-autosize "8.3.4"
 
+"@mantine/ds@^5.9.1":
+  version "5.9.1"
+  resolved "https://registry.yarnpkg.com/@mantine/ds/-/ds-5.9.1.tgz#318c23dafefda2fc3b982e911b652efea44ebe9e"
+  integrity sha512-n5QE+lgyd1b6N4CN+/V8lgiKA/ig6KWjrk/BlKQPrq/ZhwlcCk/sb8MBuW42vEcSCvA0rrwKCwStmXLuhMA2AQ==
+  dependencies:
+    "@mantine/utils" "5.9.1"
+
+"@mantine/form@^5.9.1":
+  version "5.9.1"
+  resolved "https://registry.yarnpkg.com/@mantine/form/-/form-5.9.1.tgz#bbbee92fb005dd31d87f8ae19e795857fdc44254"
+  integrity sha512-U+LVrz7Jm8Cg3Rn8MuAgnlym9UtPitreWQmdJFuHbhZoOy21Rq6Pqg+EiQt/Ua9+ijv+1af7wQcImKKyhfpXYw==
+  dependencies:
+    fast-deep-equal "^3.1.3"
+    klona "^2.0.5"
+
 "@mantine/hooks@^5.9.0":
   version "5.9.0"
   resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-5.9.0.tgz#c3ad41ab73a06b5b9a71d7c57571f8e0b1bc96cb"
@@ -254,6 +269,14 @@
   dependencies:
     "@mantine/ssr" "5.9.0"
     "@mantine/styles" "5.9.0"
+
+"@mantine/prism@^5.9.1":
+  version "5.9.1"
+  resolved "https://registry.yarnpkg.com/@mantine/prism/-/prism-5.9.1.tgz#622c84aecc4d6cbe6e6ee715e4abb3c3f567368d"
+  integrity sha512-FhkScCuLeAnuJIrTNPAQd4W2yeA/ow0XyuPDYAE2HmCmfe+Vu+PCmN/m34QqtwtXZi9+TvbxqB0VKA8P1MaXeA==
+  dependencies:
+    "@mantine/utils" "5.9.1"
+    prism-react-renderer "^1.2.1"
 
 "@mantine/ssr@5.9.0":
   version "5.9.0"
@@ -275,6 +298,11 @@
   version "5.9.0"
   resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-5.9.0.tgz#f21ba4c518a6561bea079c7c909298f35f492a99"
   integrity sha512-UU5kO1VcsntrKvznJMjZ1S/ZM6arAXFkBnBqAKfCPOPJJIcwUWOfQP8u1sxp8ounAHThp9GtkpuzzGOQy1rcPA==
+
+"@mantine/utils@5.9.1":
+  version "5.9.1"
+  resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-5.9.1.tgz#684ee4abcf042d768c7b32ea8b36d23e05017be7"
+  integrity sha512-Uz0kbUyS1E6YmE1zU2tpT6n1y973Us1brTtoMjdiix9E1eZMvJ+fTTO2ie9clzWZ3r4atpi9kyWHQ9HIu2VoCg==
 
 "@next/env@13.0.6":
   version "13.0.6"
@@ -1908,6 +1936,11 @@ json5@^1.0.1:
     array-includes "^3.1.5"
     object.assign "^4.1.3"
 
+klona@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.5.tgz#d166574d90076395d9963aa7a928fabb8d76afbc"
+  integrity sha512-pJiBpiXMbt7dkzXe8Ghj/u4FfXOOa98fPW+bihOJ4SjnoijweJrNThJfd3ifXpXhREjpoF2mZVH1GfS9LV3kHQ==
+
 language-subtag-registry@^0.3.20:
   version "0.3.22"
   resolved "https://registry.yarnpkg.com/language-subtag-registry/-/language-subtag-registry-0.3.22.tgz#2e1500861b2e457eba7e7ae86877cbd08fa1fd1d"
@@ -2297,6 +2330,11 @@ prelude-ls@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
+
+prism-react-renderer@^1.2.1:
+  version "1.3.5"
+  resolved "https://registry.yarnpkg.com/prism-react-renderer/-/prism-react-renderer-1.3.5.tgz#786bb69aa6f73c32ba1ee813fbe17a0115435085"
+  integrity sha512-IJ+MSwBWKG+SM3b2SUfdrhC+gu01QkV2KmRQgREThBfSQRoufqRfxfHUxpG1WcaFjP+kojcFyO9Qqtpgt3qLCg==
 
 process-nextick-args@~2.0.0:
   version "2.0.1"
