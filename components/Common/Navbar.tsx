@@ -3,46 +3,26 @@ import {
   createStyles,
   Navbar,
   Group,
-  Code,
-  UnstyledButton,
   Center,
   useMantineColorScheme,
-  Text,
   SegmentedControl,
   Box,
-  Divider,
 } from "@mantine/core";
 import {
-  IconWiper,
-  IconFingerprint,
-  IconKey,
-  IconSettings,
-  Icon2fa,
-  IconDatabaseImport,
-  IconReceipt2,
   IconSwitchHorizontal,
   IconLogout,
   IconSun,
   IconMoon,
-  IconPeace,
-  IconCalendar,
   IconCalendarEvent,
-  IconHomeExclamation,
-  IconExchange,
-  IconExclamationMark,
-  IconAlertTriangle,
   IconAlertCircle,
-  IconPhotoStar,
-  IconCode,
-  IconActivity,
-  IconBrandHipchat,
   IconFloatLeft,
   IconMessage,
-  IconMessage2,
+  IconAffiliate,
 } from "@tabler/icons";
 import { MantineLogo } from "@mantine/ds";
 import { useRouter } from "next/router";
 import { upperFirst } from "@mantine/hooks";
+import ProfileCard from "../Users/ProfileCard";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef("icon");
@@ -126,9 +106,7 @@ const data = [
   { link: "", label: "Global Chat", icon: IconMessage },
   { link: "", label: "Calendar", icon: IconCalendarEvent },
   { link: "", label: "Posts", icon: IconFloatLeft },
-  { link: "", label: "Security", icon: IconFingerprint },
-  { link: "", label: "Databases", icon: IconDatabaseImport },
-  { link: "", label: "Authentication", icon: Icon2fa },
+  { link: "", label: "Communities", icon: IconAffiliate },
   { link: "", label: "About", icon: IconAlertCircle },
 ];
 
@@ -158,10 +136,10 @@ export function VerticalNavbar() {
 
   return (
     <Navbar
-      height={700}
-      width={{ sm: 300 }}
+      height="100vh"
+      width={{ sm: 300, lg: 400 }}
       p="md"
-      className={router.pathname === "/login" ? "hidden" : ""}
+      className={router.pathname === "/login" ? "hidden" : "hidden md:block"}
     >
       <Navbar.Section grow>
         <Group className={classes.header} position="apart">
@@ -199,13 +177,12 @@ export function VerticalNavbar() {
       />
 
       <Navbar.Section className={classes.footer}>
-        <a
-          href="#"
-          className={classes.link}
-          onClick={(event) => event.preventDefault()}
-        >
-          <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
-          <span>Change account</span>
+        <a href="#" className="" onClick={(event) => event.preventDefault()}>
+          <ProfileCard
+            name="Harriette Spoonlicker"
+            email="hspoonlicker@outlook.com"
+            image="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=255&q=80"
+          />
         </a>
 
         <a

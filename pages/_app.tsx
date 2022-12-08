@@ -1,6 +1,7 @@
 import { AppProps } from "next/app";
 import Head from "next/head";
 import {
+  AppShell,
   ColorScheme,
   ColorSchemeProvider,
   Container,
@@ -39,12 +40,9 @@ export default function App(props: AppProps) {
             colorScheme: colorScheme,
           }}
         >
-          <Flex className="w-full">
-            <VerticalNavbar />
-            <Container>
-              <Component {...pageProps} />
-            </Container>
-          </Flex>
+          <AppShell navbar={<VerticalNavbar />}>
+            <Component {...pageProps} />
+          </AppShell>
         </MantineProvider>
       </ColorSchemeProvider>
     </>
