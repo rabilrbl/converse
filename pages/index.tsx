@@ -6,9 +6,9 @@ export default function Home() {
     <div className="">
       <Meta
         title="Converse"
-        description="Converse is a chat app built with Next.js and Mantine."
+        description="Converse is an app built with Next.js and Mantine."
       />
-      <h1>Hello</h1>
+      <h1>Home Page</h1>
     </div>
   );
 }
