@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   createStyles,
   Navbar,
@@ -7,9 +7,9 @@ import {
   useMantineColorScheme,
   SegmentedControl,
   Box,
+  Code,
 } from "@mantine/core";
 import {
-  IconSwitchHorizontal,
   IconLogout,
   IconSun,
   IconMoon,
@@ -19,10 +19,10 @@ import {
   IconMessage,
   IconAffiliate,
 } from "@tabler/icons";
-import { MantineLogo } from "@mantine/ds";
+// import { MantineLogo } from "@mantine/ds";
 import { useRouter } from "next/router";
-import { upperFirst } from "@mantine/hooks";
 import ProfileCard from "../Users/ProfileCard";
+import Link from "next/link";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef("icon");
@@ -103,11 +103,11 @@ const useStyles = createStyles((theme, _params, getRef) => {
 });
 
 const data = [
-  { link: "", label: "Global Chat", icon: IconMessage },
-  { link: "", label: "Calendar", icon: IconCalendarEvent },
-  { link: "", label: "Posts", icon: IconFloatLeft },
-  { link: "", label: "Communities", icon: IconAffiliate },
-  { link: "", label: "About", icon: IconAlertCircle },
+  { link: "/posts", label: "Posts", icon: IconFloatLeft },
+  { link: "/chat", label: "Chat", icon: IconMessage },
+  { link: "/calendar", label: "Calendar", icon: IconCalendarEvent },
+  { link: "/clubs", label: "Communities", icon: IconAffiliate },
+  { link: "/about", label: "About", icon: IconAlertCircle },
 ];
 
 export function VerticalNavbar() {
@@ -115,37 +115,42 @@ export function VerticalNavbar() {
   const Icon = colorScheme === "dark" ? IconSun : IconMoon;
   const router = useRouter();
   const { classes, cx } = useStyles();
-  const [active, setActive] = useState("Billing");
+  const [active, setActive] = useState(
+    (router.pathname !== "/" &&
+      data.find((item) => item.link.includes(router.pathname.split("/")[1]))
+        ?.label) ||
+      ""
+  );
 
   const links = data.map((item) => (
-    <a
+    <Link
       className={cx(classes.link, {
         [classes.linkActive]: item.label === active,
       })}
       href={item.link}
       key={item.label}
-      onClick={(event) => {
-        event.preventDefault();
+      onClick={() => {
         setActive(item.label);
       }}
     >
       <item.icon className={classes.linkIcon} stroke={1.5} />
       <span>{item.label}</span>
-    </a>
+    </Link>
   ));
 
   return (
     <Navbar
       height="100vh"
-      width={{ sm: 300, lg: 400 }}
+      width={{ sm: 300 }}
       p="md"
       className={router.pathname === "/login" ? "hidden" : "hidden md:block"}
     >
       <Navbar.Section grow>
         <Group className={classes.header} position="apart">
           {/* <MantineLogo size={28} /> */}
-          <h1 className="font-extrabold text-sky-500">Converse</h1>
-          {/* <Code sx={{ fontWeight: 700 }}>v3.1.2</Code> */}
+          <Link href="/" onClick={() => setActive("")}>
+            <h1 className="font-extrabold text-sky-500">Converse</h1>
+          </Link>
         </Group>
         {links}
       </Navbar.Section>
