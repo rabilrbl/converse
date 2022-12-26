@@ -33,16 +33,16 @@ export default function AuthenticationForm(props: PaperProps) {
   });
 
   return (
-        <>
+        <div className='pr-56'>
             <Paper radius="md" p="xl" withBorder {...props} className="w-full">
               <Text size="lg" weight={500}>
-                Welcome to Mantine, {type} with
+                Welcome to Converse, {type} with
               </Text>
               <Group grow mb="md" mt="md">
-                {/* <GoogleButton radius="xl">Google</GoogleButton>
-                <TwitterButton radius="xl">Twitter</TwitterButton> */}
+                {/* <GoogleButton radius="xl">Google</GoogleButton> */}
+                {/* <TwitterButton radius="xl">Twitter</TwitterButton> */}
               </Group>
-              <Divider label="Or continue with email" labelPosition="center" my="lg" />
+              {/* <Divider label="Or continue with email" labelPosition="center" my="lg" /> */}
               <form onSubmit={form.onSubmit(() => {})}>
                 <Stack>
                   {type === 'register' && (
@@ -89,10 +89,10 @@ export default function AuthenticationForm(props: PaperProps) {
                       ? 'Already have an account? Login'
                       : "Don't have an account? Register"}
                   </Anchor>
-                  <Button type="submit">{upperFirst(type)}</Button>
+                  <Button variant='filled' type="submit">{upperFirst(type)}</Button>
                 </Group>
               </form>
             </Paper>
-        </>
+        </div>
   );
 }
