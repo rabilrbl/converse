@@ -82,7 +82,7 @@ export default function Home() {
             <Title className={classes.title}>
               <span className={classes.highlight}>Converse</span> for SJEC <br />
             </Title>
-            <Text color="dimmed" mt="md">
+            <Text color="dimmed" mt="md" size="xl">
               Converse is an SJEC student forum to communicate with your peers.
               Chat with your peers, post your thoughts and ideas, and more.
               Explore various communities and find your niche. Calender events on campus and holidays.
@@ -90,7 +90,7 @@ export default function Home() {
             <List
               mt={30}
               spacing="sm"
-              size="sm"
+              size="lg"
               icon={
                 <ThemeIcon size={20} radius="xl">
                   <IconCheck size={12} stroke={1.5} />
