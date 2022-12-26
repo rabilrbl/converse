@@ -109,14 +109,14 @@ export default function Home() {
             </List>
             <Group mt={30}>
               <Link href="/posts">
-                <Button variant="outline" radius="xl" size="md" className={classes.control}>
+                <Button variant="outline" radius="xl" size="xl" className={classes.control}>
                   Explore
                 </Button>
               </Link>
               <Button
                 variant="default"
                 radius="xl"
-                size="md"
+                size="xl"
                 className={classes.control}
                 component="a"
                 href="https://github.com/rabilrbl/converse"
