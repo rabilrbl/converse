@@ -1,16 +1,16 @@
 import { TextInput, TextInputProps, ActionIcon, useMantineTheme } from '@mantine/core';
-import { IconSearch, IconArrowRight, IconArrowLeft } from '@tabler/icons';
+import { IconSearch, IconArrowRight, IconArrowLeft, IconMessage } from '@tabler/icons';
 
 export function MessageInput(props: TextInputProps) {
   const theme = useMantineTheme();
 
   return (
     <TextInput
-      icon={<IconSearch size={18} stroke={1.5} />}
+      icon={<IconMessage size={18} stroke={1.5} />}
       radius="xl"
-      size="md"
+      size="lg"
       rightSection={
-        <ActionIcon size={32} radius="xl" color={theme.primaryColor} variant="filled">
+        <ActionIcon size={40} mr={12} radius="xl" color={theme.primaryColor} variant="outline" onClick={() => {}}>
           {theme.dir === 'ltr' ? (
             <IconArrowRight size={18} stroke={1.5} />
           ) : (
@@ -18,7 +18,7 @@ export function MessageInput(props: TextInputProps) {
           )}
         </ActionIcon>
       }
-      placeholder="Search questions"
+      placeholder="Send message"
       rightSectionWidth={42}
       {...props}
     />

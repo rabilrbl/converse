@@ -1,4 +1,7 @@
+import { ThemeContext } from "@emotion/react";
+import { Box, Container, Divider, Text, useMantineTheme } from "@mantine/core";
 import React, { useEffect, useState } from "react";
+import { MessageInput } from "../components/Chat/MessageInput";
 
 const Chat = () => {
   const [messages, setMessages] = useState<any>([]);
@@ -44,38 +47,56 @@ const Chat = () => {
     ]);
   };
 
+  const theme = useMantineTheme();
+
   return (
-    <div className="bg-gray-200 h-screen flex flex-col">
-      <div className="px-4 py-2 bg-white shadow-md">
-        <h1 className="text-2xl font-bold text-gray-800">Global Chat</h1>
+    <Container>
+      <div className="bg-inherit h-[95vh] flex flex-col">
+        <div className="px-4 py-2 shadow-md">
+          <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100">
+            Chat
+          </h1>
+        </div>
+        <div className="flex-1 overflow-y-scroll">
+          {messages.map((message: { id: number; user: string; text: string }) => (
+            <div key={message.id}>
+              <Box
+                sx={(theme) => ({
+                  backgroundColor:
+                    theme.colorScheme === "dark"
+                      ? theme.colors.dark[6]
+                      : theme.colors.gray[0],
+                  textAlign: "start",
+                  padding: theme.spacing.md,
+                  borderRadius: theme.radius.md,
+                  cursor: "default",
+                  "&:hover": {
+                    backgroundColor:
+                      theme.colorScheme === "dark"
+                        ? theme.colors.dark[5]
+                        : theme.colors.gray[1],
+                  },
+                })}
+              >
+                <Text fz="xs" fw="bold" color={theme.colors.blue[2]}>
+                  {message.user}
+                </Text>
+                <p className="">{message.text}</p>
+              </Box>
+              <Divider my="sm" />
+            </div>
+          ))}
+        </div>
+        <form onSubmit={handleSubmit} className="px-4 py-2 shadow-md">
+          <MessageInput
+            value={newMessage}
+            onChange={(e) => {
+              setNewMessage(e.target.value);
+            }}
+          />
+        </form>
       </div>
-      <div className="flex-1 overflow-y-scroll">
-        {messages.map((message: { id: number; user: string; text: string }) => (
-          <div
-            key={message.id}
-            className="px-4 py-2 bg-white shadow-md rounded-lg my-2"
-          >
-            <h1 className="text-xl font-bold text-gray-800">{message.user}</h1>
-            <p className="text-gray-700">{message.text}</p>
-          </div>
-        ))}
-      </div>
-      <form onSubmit={handleSubmit} className="px-4 py-2 bg-white shadow-md">
-        <input
-          type="text"
-          placeholder="Type your message here"
-          value={newMessage}
-          onChange={(event) => setNewMessage(event.target.value)}
-          className="px-2 py-1 rounded-lg w-full"
-        />
-        <button
-          type="submit"
-          className="px-4 py-1 rounded-lg bg-blue-500 text-white ml-2"
-        >
-          Send
-        </button>
-      </form>
-    </div>
+    </Container>
   );
 };
 
