@@ -1,4 +1,6 @@
-import React from "react";
+import { Button, Flex, Title } from "@mantine/core";
+import { IconPlus } from "@tabler/icons";
+import React, { useState } from "react";
 import { ArticleCardVertical } from "../components/Posts/ArticleCard";
 
 const posts = () => {
@@ -52,9 +54,15 @@ const posts = () => {
       },
     },
   ];
+
+  // const [opened, setOpened] = useState(false);
+
   return (
     <div>
-      <h1>Posts</h1>
+      <Flex className="gap-2 justify-between">
+        <Title order={1}>Posts</Title>
+        <Button variant="outline"><IconPlus />{" "} New Post</Button>
+      </Flex>
       <h2 className="text-lg font-bold">Featured</h2>
       <div className="grid grid-cols-2 gap-2">
         {posts.map((post, index) => {
