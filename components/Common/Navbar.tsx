@@ -8,6 +8,7 @@ import {
   SegmentedControl,
   Box,
   Code,
+  Divider,
 } from "@mantine/core";
 import {
   IconLogout,
@@ -145,7 +146,7 @@ export function VerticalNavbar() {
       p="md"
       className={router.pathname === "/login" ? "hidden" : "hidden md:block"}
     >
-      <Navbar.Section grow>
+      <Navbar.Section grow className="py-2">
         <Group className={classes.header} position="apart">
           {/* <MantineLogo size={28} /> */}
           <Link href="/" onClick={() => setActive("")}>
@@ -155,6 +156,7 @@ export function VerticalNavbar() {
         {links}
       </Navbar.Section>
 
+      <Divider className="pb-4" />
       <SegmentedControl
         className="w-full"
         value={colorScheme}
@@ -184,9 +186,9 @@ export function VerticalNavbar() {
       <Navbar.Section className={classes.footer}>
         <a href="#" className="" onClick={(event) => event.preventDefault()}>
           <ProfileCard
-            name="Harriette Spoonlicker"
-            email="hspoonlicker@outlook.com"
-            image="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=255&q=80"
+            name="John Snow"
+            email="john@snow.com"
+            image="https://i.pravatar.cc/300"
           />
         </a>
 
