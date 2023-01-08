@@ -19,6 +19,7 @@ import {
   IconFloatLeft,
   IconMessage,
   IconAffiliate,
+  IconLogin,
 } from "@tabler/icons";
 // import { MantineLogo } from "@mantine/ds";
 import { useRouter } from "next/router";
@@ -124,7 +125,7 @@ export function VerticalNavbar() {
       ""
   );
 
-  const { data: session, status: loginStatus } = useSession({required:true});
+  const { data: session, status: loginStatus } = useSession();
 
   const links = data.map((item) => (
     <Link
@@ -187,7 +188,7 @@ export function VerticalNavbar() {
       />
 
       <Navbar.Section className={classes.footer}>
-        {loginStatus === "authenticated" && (
+        {loginStatus === "authenticated" ? (
           <>
             <a
               href="#"
@@ -212,6 +213,11 @@ export function VerticalNavbar() {
               <span>Logout</span>
             </a>
           </>
+        ) : (
+          <a className={classes.link+" cursor-pointer"} onClick={() => signIn("google")}>
+            <IconLogin className={classes.linkIcon} stroke={1.5} />
+            <span>Login</span>
+          </a>
         )}
       </Navbar.Section>
     </Navbar>
