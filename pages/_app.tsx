@@ -48,17 +48,11 @@ export default function App({
           }}
         >
           <ModalsProvider>
-            {router.route === "/login" ? (
-              <AppShell>
+            <SessionProvider session={session}>
+              <AppShell navbar={<VerticalNavbar />}>
                 <Component {...pageProps} />
               </AppShell>
-            ) : (
-              <SessionProvider session={session}>
-                <AppShell navbar={<VerticalNavbar />}>
-                  <Component {...pageProps} />
-                </AppShell>
-              </SessionProvider>
-            )}
+            </SessionProvider>
           </ModalsProvider>
         </MantineProvider>
       </ColorSchemeProvider>
