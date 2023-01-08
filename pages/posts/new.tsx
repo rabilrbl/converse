@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Container,
   FileInput,
   Select,
   Textarea,
@@ -43,7 +44,7 @@ const New = (props: {
   });
 
   return (
-    <Box>
+    <Container>
       <Title order={1}>New Post</Title>
       <form
         onSubmit={form.onSubmit(async (values) => {
@@ -108,7 +109,7 @@ const New = (props: {
           Create Post
         </Button>
       </form>
-    </Box>
+    </Container>
   );
 };
 

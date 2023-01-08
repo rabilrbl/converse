@@ -1,4 +1,4 @@
-import { Button, Flex, Title } from "@mantine/core";
+import { Button, Container, Flex, Title } from "@mantine/core";
 import { IconPlus } from "@tabler/icons";
 import { useRouter } from "next/router";
 import { ArticleCardVertical } from "../../components/Posts/ArticleCard";
@@ -18,13 +18,10 @@ const Posts = (props: {
     date: string;
   }[];
 }) => {
-  const { data: session } = useSession({
-    required: true,
-  });
   const router = useRouter();
 
   return (
-    <div>
+    <Container>
       <Flex className="gap-2 justify-between">
         <Title order={1}>Posts</Title>
         <Button
@@ -38,8 +35,7 @@ const Posts = (props: {
           New Post
         </Button>
       </Flex>
-      <h2 className="text-lg font-bold">Featured</h2>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="mt-6 grid grid-cols-2 gap-2">
         {props.posts.map((post, index) => {
           return (
             <ArticleCardVertical
@@ -50,7 +46,7 @@ const Posts = (props: {
           );
         })}
       </div>
-    </div>
+    </Container>
   );
 };
 
