@@ -1,9 +1,7 @@
 import { Button, Flex, Title } from "@mantine/core";
-import { useForm } from "@mantine/form";
-import { openModal } from "@mantine/modals";
 import { IconPlus } from "@tabler/icons";
-import React, { useState } from "react";
-import { ArticleCardVertical } from "../components/Posts/ArticleCard";
+import { useRouter } from "next/router";
+import { ArticleCardVertical } from "../../components/Posts/ArticleCard";
 
 const Posts = (props: {
   posts: {
@@ -19,25 +17,7 @@ const Posts = (props: {
     date: string;
   }[];
 }) => {
-  const newPostModal = () =>
-    openModal({
-      title: "New Post",
-      children: <div>Modal Content</div>,
-      centered: true,
-    });
-
-  const form = useForm({
-    initialValues: {
-      title: "",
-    },
-    validate: (values) => {
-      const errors: any = {};
-      if (!values.title) {
-        errors.title = "Title is required";
-      }
-      return errors;
-    },
-  });
+  const router = useRouter();
 
   return (
     <div>
@@ -45,7 +25,9 @@ const Posts = (props: {
         <Title order={1}>Posts</Title>
         <Button
           className="bg-blue-500"
-          onClick={newPostModal}
+          onClick={() => {
+            router.push("/posts/new");
+          }}
           variant="filled"
           leftIcon={<IconPlus />}
         >

@@ -10,7 +10,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         select: {
           id: true,
           title: true,
-          content: true,
           author: {
             select: {
               name: true,
