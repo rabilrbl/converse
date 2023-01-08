@@ -31,7 +31,7 @@ interface ArticleCardVerticalProps {
 
 export function ArticleCardVertical({
   image,
-  category,
+  thread,
   title,
   date,
   author,
@@ -43,7 +43,7 @@ export function ArticleCardVertical({
         <Image alt="An article image" src={image} height={140} width={140} />
         <div className={classes.body}>
           <Text transform="uppercase" color="dimmed" weight={700} size="xs">
-            {category}
+            {thread.topic}
           </Text>
           <Text className={classes.title} mt="xs" mb="md">
             {title}
