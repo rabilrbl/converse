@@ -6,7 +6,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   switch (method) {
     case "GET":
-      const posts = await new PrismaClient().posts.findMany();
+      const posts = await new PrismaClient().posts.findMany({
+        select: {
+          id: true,
+          title: true,
+          content: true,
+          author: {
+            select: {
+              name: true,
+              profilePicture: true,
+            },
+          },
+          thread: {
+            select: {
+              topic: true,
+            },
+          },
+        },
+      });
       res.status(200).json(posts);
       break;
     case "POST":

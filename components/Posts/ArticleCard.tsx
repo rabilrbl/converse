@@ -18,12 +18,14 @@ const useStyles = createStyles((theme) => ({
 
 interface ArticleCardVerticalProps {
   image: string;
-  category: string;
+  thread: {
+    topic: string;
+  };
   title: string;
   date: string;
   author: {
     name: string;
-    avatar: string;
+    profilePicture: string;
   };
 }
 
@@ -48,7 +50,7 @@ export function ArticleCardVertical({
           </Text>
           <Group noWrap spacing="xs">
             <Group spacing="xs" noWrap>
-              <Avatar size={20} src={author.avatar} />
+              <Avatar size={20} src="https://images.unsplash.com/photo-1628890923662-2cb23c2e0cfe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80" />
               <Text size="xs">{author.name}</Text>
             </Group>
             <Text size="xs" color="dimmed">
