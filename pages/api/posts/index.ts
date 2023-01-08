@@ -13,7 +13,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           author: {
             select: {
               name: true,
-              profilePicture: true,
+              image: true,
             },
           },
           thread: {

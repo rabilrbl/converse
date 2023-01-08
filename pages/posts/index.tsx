@@ -11,7 +11,7 @@ const Posts = (props: {
     title: string;
     author: {
       name: string;
-      profilePicture: string;
+      image: string;
     };
     content: string;
     date: string;
