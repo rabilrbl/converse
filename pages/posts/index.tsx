@@ -2,6 +2,7 @@ import { Button, Flex, Title } from "@mantine/core";
 import { IconPlus } from "@tabler/icons";
 import { useRouter } from "next/router";
 import { ArticleCardVertical } from "../../components/Posts/ArticleCard";
+import { useSession } from "next-auth/react";
 
 const Posts = (props: {
   posts: {
@@ -17,6 +18,9 @@ const Posts = (props: {
     date: string;
   }[];
 }) => {
+  const { data: session } = useSession({
+    required: true,
+  });
   const router = useRouter();
 
   return (

@@ -8,6 +8,7 @@ import {
   Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 const New = (props: {
@@ -37,6 +38,9 @@ const New = (props: {
       },
     },
   });
+  const { data: session } = useSession({
+    required: true,
+  });
 
   return (
     <Box>
@@ -56,7 +60,7 @@ const New = (props: {
               title,
               content,
               thread,
-              author: 1,
+              author: session.user.id,
             }),
           }).then((res) => {
             if (res.ok) {

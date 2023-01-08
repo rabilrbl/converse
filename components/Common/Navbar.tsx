@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   createStyles,
   Navbar,
@@ -24,6 +24,7 @@ import {
 import { useRouter } from "next/router";
 import ProfileCard from "../Users/ProfileCard";
 import Link from "next/link";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef("icon");
@@ -123,6 +124,8 @@ export function VerticalNavbar() {
       ""
   );
 
+  const { data: session, status: loginStatus } = useSession({required:true});
+
   const links = data.map((item) => (
     <Link
       className={cx(classes.link, {
@@ -184,22 +187,32 @@ export function VerticalNavbar() {
       />
 
       <Navbar.Section className={classes.footer}>
-        <a href="#" className="" onClick={(event) => event.preventDefault()}>
-          <ProfileCard
-            name="John Snow"
-            email="john@snow.com"
-            image="https://i.pravatar.cc/300"
-          />
-        </a>
-
-        <a
-          href="#"
-          className={classes.link}
-          onClick={(event) => event.preventDefault()}
-        >
-          <IconLogout className={classes.linkIcon} stroke={1.5} />
-          <span>Logout</span>
-        </a>
+        {loginStatus === "authenticated" && (
+          <>
+            <a
+              href="#"
+              className=""
+              onClick={(event) => event.preventDefault()}
+            >
+              <ProfileCard
+                name={session.user.name}
+                email={session.user.email}
+                image={session.user.image}
+              />
+            </a>
+            <a
+              href="#logout"
+              className={classes.link}
+              onClick={(event) => {
+                event.preventDefault();
+                signOut();
+              }}
+            >
+              <IconLogout className={classes.linkIcon} stroke={1.5} />
+              <span>Logout</span>
+            </a>
+          </>
+        )}
       </Navbar.Section>
     </Navbar>
   );

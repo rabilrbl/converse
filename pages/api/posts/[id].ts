@@ -1,8 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
+import { unstable_getServerSession } from "next-auth/next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const method = req.method;
+  const session = await unstable_getServerSession(req);
+  if (!session) {
+    res.status(401).end("Unauthorized");
+    return;
+  }
   const id = Number.parseInt(req.query.id as string);
 
   switch (method) {
