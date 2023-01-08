@@ -17,9 +17,9 @@ model User {
   updatedAt DateTime @updatedAt
   email     String   @unique
   name      String
-  password  String
+  password  String?
   posts     Posts[]
-  profilePicture Bytes?
+  image     String?
   dob       DateTime? @db.Date
   gender    String? @db.VarChar(1)
   bio       String?
