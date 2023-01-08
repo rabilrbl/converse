@@ -48,6 +48,7 @@ model Thread {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  topic      String
   posts     Posts[]
 }
 
