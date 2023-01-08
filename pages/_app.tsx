@@ -11,6 +11,7 @@ import {
 import "../styles/globals.css";
 import { useState } from "react";
 import { VerticalNavbar } from "../components/Common/Navbar";
+import { ModalsProvider } from '@mantine/modals';
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
@@ -40,9 +41,11 @@ export default function App(props: AppProps) {
             colorScheme: colorScheme,
           }}
         >
-          <AppShell navbar={<VerticalNavbar />}>
-            <Component {...pageProps} />
-          </AppShell>
+          <ModalsProvider>
+            <AppShell navbar={<VerticalNavbar />}>
+              <Component {...pageProps} />
+            </AppShell>
+          </ModalsProvider>
         </MantineProvider>
       </ColorSchemeProvider>
     </>
