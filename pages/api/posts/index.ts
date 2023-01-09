@@ -1,8 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
+import { getSession } from "next-auth/react";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const method = req.method;
+  const session = await getSession({ req });
 
   switch (method) {
     case "GET":
@@ -26,20 +28,28 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       res.status(200).json(posts);
       break;
     case "POST":
+      const title = req.body.title;
+      const content = req.body.content;
+      const threadId = Number.parseInt(req.body.thread);
+      const authorId = Number.parseInt(session.user.id);
+      if (!title || !content || !threadId) {
+        res.status(400).end({
+          error: "Bad Request",
+        });
+        break;
+      }
+      if (!authorId) {
+        res.status(401).end({
+          error: "Unauthorized",
+        });
+        break;
+      }
       const newPost = await new PrismaClient().posts.create({
         data: {
-          title: req.body.title,
-          content: req.body.content,
-          author: {
-            connect: {
-              id: Number.parseInt(req.body.author),
-            },
-          },
-          thread: {
-            connect: {
-              id: Number.parseInt(req.body.thread),
-            },
-          },
+          title,
+          content,
+          authorId,
+          threadId,
         },
       });
       res.status(201).json(newPost);

@@ -54,6 +54,8 @@ model Thread {
   updatedAt DateTime @updatedAt
   topic      String  @unique
   posts     Posts[]
+  image   String?
+  description String?
 }
 
 // Create calendar model
@@ -76,6 +78,7 @@ model Uploads {
   file      Bytes
   fileName  String
   fileType  String?
+  encoding  String?
   posts     Posts   @relation(fields: [postId], references: [id])
   postId    Int
 }

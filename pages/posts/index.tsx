@@ -3,6 +3,7 @@ import { IconPlus } from "@tabler/icons";
 import { useRouter } from "next/router";
 import { ArticleCardVertical } from "../../components/Posts/ArticleCard";
 import { useSession } from "next-auth/react";
+import { PrismaClient } from "@prisma/client";
 
 const Posts = (props: {
   posts: {
@@ -51,8 +52,23 @@ const Posts = (props: {
 };
 
 export async function getServerSideProps() {
-  const res = await fetch("http://localhost:3000/api/posts");
-  const posts = await res.json();
+  const posts = await new PrismaClient().posts.findMany({
+    select: {
+      id: true,
+      title: true,
+      author: {
+        select: {
+          name: true,
+          image: true,
+        },
+      },
+      thread: {
+        select: {
+          topic: true,
+        },
+      },
+    },
+  });
 
   return {
     props: {
