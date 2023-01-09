@@ -1,29 +1,56 @@
 import {
+  Avatar,
   Box,
   Button,
   Container,
   FileInput,
+  Group,
   Select,
   Textarea,
   TextInput,
   Title,
+  Text,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { forwardRef } from "react";
+import { PrismaClient } from "@prisma/client";
 
-const New = (props: {
-  threads: {
-    topic: string;
-    id: number;
-  };
-}) => {
+interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
+  image: string;
+  label: string;
+  description: string;
+  value: Number;
+}
+
+const SelectItem = forwardRef<HTMLDivElement, ItemProps>(function SelectItem(
+  { image, label, description, value, ...others }: ItemProps,
+  ref
+) {
+  return (
+    <div ref={ref} {...others}>
+      <Group noWrap>
+        <Avatar src={image} />
+
+        <div>
+          <Text size="sm">{label}</Text>
+          <Text size="xs" opacity={0.65}>
+            {description}
+          </Text>
+        </div>
+      </Group>
+    </div>
+  );
+});
+
+const New = (props: { threads: any }) => {
   const router = useRouter();
   const form = useForm({
     initialValues: {
       title: "",
       content: "",
-      thread: props.threads[0].value,
+      thread: 0,
       attachments: [],
     },
     validate: {
@@ -37,9 +64,15 @@ const New = (props: {
           return "Content is required";
         }
       },
+      thread: (value) => {
+        if (!value) {
+          return "Thread is required";
+        }
+      },
     },
   });
-  const { data: session } = useSession({
+
+  useSession({
     required: true,
   });
 
@@ -48,21 +81,12 @@ const New = (props: {
       <Title order={1}>New Post</Title>
       <form
         onSubmit={form.onSubmit(async (values) => {
-          const title = values.title;
-          const content = values.content;
-          const thread = values.thread;
-          //  Post all the values to the API
           fetch("/api/posts", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-              title,
-              content,
-              thread,
-              author: session.user.id,
-            }),
+            body: JSON.stringify(values),
           }).then((res) => {
             if (res.ok) {
               router.push("/posts");
@@ -83,9 +107,14 @@ const New = (props: {
         </div>
         <div className="mb-4">
           <Select
-            data={props.threads}
-            label="Thread Topic"
+            label="Topic"
             withAsterisk
+            placeholder="Pick one"
+            itemComponent={SelectItem}
+            data={props.threads}
+            searchable
+            maxDropdownHeight={400}
+            nothingFound="Nobody here"
             {...form.getInputProps("thread")}
           />
         </div>
@@ -114,12 +143,13 @@ const New = (props: {
 };
 
 export async function getServerSideProps() {
-  const res = await fetch("http://localhost:3000/api/threads");
-  let threads = (await res.json()) as Record<string, any>;
-  threads = threads.map((thread) => {
+  const res = await new PrismaClient().thread.findMany();
+  let threads = res.map((thread) => {
     return {
       label: thread.topic,
       value: thread.id,
+      description: thread.description,
+      image: thread.image,
     };
   });
   return {
