@@ -2,11 +2,11 @@ import { Button, Container, Flex, Title } from "@mantine/core";
 import { IconPlus } from "@tabler/icons";
 import { useRouter } from "next/router";
 import { ArticleCardVertical } from "../../components/Posts/ArticleCard";
-import { useSession } from "next-auth/react";
 import { PrismaClient } from "@prisma/client";
 
 const Posts = (props: {
   posts: {
+    id: number;
     thread: {
       topic: string;
     };
@@ -36,7 +36,7 @@ const Posts = (props: {
           New Post
         </Button>
       </Flex>
-      <div className="mt-6 grid grid-cols-2 gap-2">
+      <div className="mt-6 grid grid-cols-3 gap-4">
         {props.posts.map((post, index) => {
           return (
             <ArticleCardVertical

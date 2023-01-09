@@ -1,28 +1,55 @@
-import { createStyles, Card, Image, Avatar, Text, Group } from '@mantine/core';
+import {
+  createStyles,
+  Card,
+  Image,
+  ActionIcon,
+  Group,
+  Text,
+  Avatar,
+  Badge,
+} from "@mantine/core";
+import { IconHeart, IconBookmark, IconShare } from "@tabler/icons";
+import { useRouter } from "next/router";
 
 const useStyles = createStyles((theme) => ({
   card: {
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+    backgroundColor:
+      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
+    ":hover": {
+      backgroundColor:
+        theme.colorScheme === "dark"
+          ? theme.colors.dark[6]
+          : theme.colors.gray[0],
+      transform: "translateY(-2px) scale(1.01)",
+      transition: "all 0.2s ease-in-out",
+    },
   },
 
   title: {
-    fontWeight: 700,
     fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-    lineHeight: 1.2,
+    cursor: "pointer",
+    ":hover": {
+      textDecoration: "underline",
+    },
+    transition: "all 0.2 ease-in-out",
   },
 
-  body: {
-    padding: theme.spacing.md,
+  footer: {
+    padding: `${theme.spacing.xs}px ${theme.spacing.lg}px`,
+    marginTop: theme.spacing.md,
+    borderTop: `1px solid ${
+      theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[2]
+    }`,
   },
 }));
 
 interface ArticleCardVerticalProps {
+  id: number;
   image: string;
   thread: {
     topic: string;
   };
   title: string;
-  date: string;
   author: {
     name: string;
     image: string;
@@ -30,38 +57,65 @@ interface ArticleCardVerticalProps {
 }
 
 export function ArticleCardVertical({
+  id,
   image,
   thread,
   title,
-  date,
   author,
 }: ArticleCardVerticalProps) {
-  const { classes } = useStyles();
+  const { classes, theme } = useStyles();
+  const router = useRouter();
+  const gotoPost = (id: number) => router.push(`/posts/${id}`);
   return (
-    <Card withBorder radius="md" p={0} className={classes.card}>
-      <Group noWrap spacing={0}>
-        <Image alt="An article image" src={image} height={140} width={140} />
-        <div className={classes.body}>
-          <Text transform="uppercase" color="dimmed" weight={700} size="xs">
-            {thread.topic}
+    <Card withBorder p="lg" radius="md" className={classes.card}>
+      <Card.Section mb="sm" onClick={() => gotoPost(id)} className="cursor-pointer">
+        <Image src={image} alt={title} height={180} />
+      </Card.Section>
+
+      <Badge>{thread.topic}</Badge>
+
+      <Text
+        size="lg"
+        weight={700}
+        className={classes.title}
+        mt="xs"
+        onClick={() => gotoPost(id)}
+      >
+        {title}
+      </Text>
+
+      <Group mt="lg">
+        <Avatar src={author.image} radius="sm" />
+        <div>
+          <Text weight={500}>{author.name}</Text>
+          <Text size="xs" color="dimmed">
+            2 days ago
           </Text>
-          <Text className={classes.title} mt="xs" mb="md">
-            {title}
-          </Text>
-          <Group noWrap spacing="xs">
-            <Group spacing="xs" noWrap>
-              <Avatar size={20} src={author.image} />
-              <Text size="xs">{author.name}</Text>
-            </Group>
-            <Text size="xs" color="dimmed">
-              •
-            </Text>
-            <Text size="xs" color="dimmed">
-              {date}
-            </Text>
-          </Group>
         </div>
       </Group>
+
+      <Card.Section className={classes.footer}>
+        <Group position="apart">
+          {/* <Text size="xs" color="dimmed">
+            {footer}
+          </Text> */}
+          <Group spacing={0}>
+            <ActionIcon>
+              <IconHeart size={18} color={theme.colors.red[6]} stroke={1.5} />
+            </ActionIcon>
+            <ActionIcon>
+              <IconBookmark
+                size={18}
+                color={theme.colors.yellow[6]}
+                stroke={1.5}
+              />
+            </ActionIcon>
+            <ActionIcon>
+              <IconShare size={16} color={theme.colors.blue[6]} stroke={1.5} />
+            </ActionIcon>
+          </Group>
+        </Group>
+      </Card.Section>
     </Card>
   );
 }

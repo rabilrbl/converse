@@ -16,6 +16,8 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { forwardRef } from "react";
 import { PrismaClient } from "@prisma/client";
+import TextEditor from "../../components/Posts/TextEditor";
+import Back from "../../components/Common/Back";
 
 interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
   image: string;
@@ -49,7 +51,8 @@ const New = (props: { threads: any }) => {
   const form = useForm({
     initialValues: {
       title: "",
-      content: "",
+      content:
+        '<h2 style="text-align: center;">Welcome to Converse rich text editor</h2><code>RichTextEditor</code> component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users.<ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li></ul>',
       thread: 0,
       attachments: [],
     },
@@ -77,7 +80,8 @@ const New = (props: { threads: any }) => {
   });
 
   return (
-    <Container>
+    <Container size="lg">
+      <Back />
       <Title order={1}>New Post</Title>
       <form
         onSubmit={form.onSubmit(async (values) => {
@@ -95,10 +99,10 @@ const New = (props: { threads: any }) => {
             }
           });
         })}
-        className="max-w-2xl"
       >
         <div className="mb-4">
           <TextInput
+            size="lg"
             label="Title"
             placeholder="Title"
             withAsterisk
@@ -118,12 +122,13 @@ const New = (props: { threads: any }) => {
             {...form.getInputProps("thread")}
           />
         </div>
-        <div className="mb-4">
-          <Textarea
-            label="Content"
-            placeholder="Content"
-            withAsterisk
-            {...form.getInputProps("content")}
+        <div className="mb-4 w-full">
+          <Title order={3}>Content</Title>
+          <TextEditor
+            content={form.values.content}
+            setContent={(content) => {
+              form.setFieldValue("content", content);
+            }}
           />
         </div>
         <div className="mb-4">
