@@ -57,7 +57,6 @@ export default function Profile({ user }) {
                           icon: <IconExclamationCircle />,
                         });
                       } else {
-                        router.reload();
                         showNotification({
                           title: "Success",
                           message: "Your profile has been updated",
