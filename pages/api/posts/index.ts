@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
+import prisma from "../../../lib/prisma";
 import { getSession } from "next-auth/react";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -8,7 +8,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   switch (method) {
     case "GET":
-      const posts = await new PrismaClient().posts.findMany({
+      const posts = await prisma.posts.findMany({
         select: {
           id: true,
           title: true,
@@ -44,7 +44,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         });
         break;
       }
-      const newPost = await new PrismaClient().posts.create({
+      const newPost = await prisma.posts.create({
         data: {
           title,
           content,

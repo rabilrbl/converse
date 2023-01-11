@@ -1,6 +1,6 @@
 import { Avatar, Text, Container, Flex, Group, Title } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
-import { PrismaClient } from "@prisma/client";
+import prisma from "../../lib/prisma";
 import { getSession, useSession } from "next-auth/react";
 import ProfilePageCard from "../../components/Users/ProfilePageCard";
 
@@ -28,7 +28,7 @@ export default function Profile({ user }) {
                     "Content-Type": "application/json",
                   },
                   body: JSON.stringify({
-                    dob: `${value.toDateString()}`,
+                    dob: value,
                   }),
                 })
                   .then((res) => res.json())
@@ -63,7 +63,7 @@ export async function getServerSideProps({ req }) {
   } else {
     return {
       props: {
-        user: await new PrismaClient().user.findUnique({
+        user: await prisma.user.findUnique({
           where: {
             id: Number.parseInt(session.user.id),
           },

@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
+import prisma from "../../../lib/prisma";
 import { unstable_getServerSession } from "next-auth/next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -13,7 +13,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   switch (method) {
     case "PUT":
-      const updatedPost = await new PrismaClient().posts.update({
+      const updatedPost = await prisma.posts.update({
         where: {
           id: id,
         },
@@ -27,7 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       res.status(200).json(updatedPost);
       break;
     case "DELETE":
-      const deletedPost = await new PrismaClient().posts.delete({
+      const deletedPost = await prisma.posts.delete({
         where: {
           id: id,
         },

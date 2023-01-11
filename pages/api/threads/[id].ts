@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { PrismaClient } from "@prisma/client";
+import prisma from "../../../lib/prisma";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const method = req.method;
@@ -8,7 +8,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   switch (method) {
     case "PUT":
-      const updatedThread = await new PrismaClient().thread.update({
+      const updatedThread = await prisma.thread.update({
         where: {
           id: id,
         },
@@ -19,7 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       res.status(200).json(updatedThread);
       break;
     case "DELETE":
-      const deletedThread = await new PrismaClient().thread.delete({
+      const deletedThread = await prisma.thread.delete({
         where: {
           id: id,
         },
