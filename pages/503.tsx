@@ -1,18 +1,28 @@
-import { createStyles, Container, Title, Text, Button, Group } from '@mantine/core';
+import {
+  createStyles,
+  Container,
+  Title,
+  Text,
+  Button,
+  Group,
+} from "@mantine/core";
 
 const useStyles = createStyles((theme) => ({
   root: {
     paddingTop: 120,
     paddingBottom: 120,
-    backgroundColor: theme.fn.variant({ variant: 'filled', color: theme.primaryColor }).background,
+    backgroundColor: theme.fn.variant({
+      variant: "filled",
+      color: theme.primaryColor,
+    }).background,
   },
 
   inner: {
-    position: 'relative',
+    position: "relative",
   },
 
   image: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     right: 0,
     left: 0,
@@ -22,36 +32,36 @@ const useStyles = createStyles((theme) => ({
 
   content: {
     paddingTop: 220,
-    position: 'relative',
+    position: "relative",
     zIndex: 1,
 
-    [theme.fn.smallerThan('sm')]: {
+    [theme.fn.smallerThan("sm")]: {
       paddingTop: 120,
     },
   },
 
   title: {
     fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-    textAlign: 'center',
+    textAlign: "center",
     fontWeight: 900,
     fontSize: 38,
     color: theme.white,
 
-    [theme.fn.smallerThan('sm')]: {
+    [theme.fn.smallerThan("sm")]: {
       fontSize: 32,
     },
   },
 
   description: {
     maxWidth: 460,
-    margin: 'auto',
+    margin: "auto",
     marginTop: theme.spacing.xl,
     marginBottom: theme.spacing.xl * 1.5,
     color: theme.colors[theme.primaryColor][1],
   },
 }));
 
-export function ServerOverload() {
+export default function ServerOverload() {
   const { classes } = useStyles();
 
   return (
@@ -62,8 +72,9 @@ export function ServerOverload() {
           <div className={classes.content}>
             <Title className={classes.title}>All of our servers are busy</Title>
             <Text size="lg" align="center" className={classes.description}>
-              We cannot handle your request right now, please wait for a couple of minutes and
-              refresh the page. Our team is already working on this issue.
+              We cannot handle your request right now, please wait for a couple
+              of minutes and refresh the page. Our team is already working on
+              this issue.
             </Text>
             <Group position="center">
               <Button size="md" variant="white">
