@@ -14,6 +14,7 @@ import { VerticalNavbar } from "../components/Common/Navbar";
 import { ModalsProvider } from "@mantine/modals";
 import { SessionProvider } from "next-auth/react";
 import { useRouter } from "next/router";
+import { NotificationsProvider } from "@mantine/notifications";
 
 export default function App({
   Component,
@@ -49,9 +50,11 @@ export default function App({
         >
           <ModalsProvider>
             <SessionProvider session={session}>
+            <NotificationsProvider>
               <AppShell navbar={<VerticalNavbar />}>
                 <Component {...pageProps} />
               </AppShell>
+            </NotificationsProvider>
             </SessionProvider>
           </ModalsProvider>
         </MantineProvider>

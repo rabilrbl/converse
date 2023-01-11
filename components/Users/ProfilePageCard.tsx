@@ -1,5 +1,5 @@
-import { createStyles, Avatar, Text, Group } from "@mantine/core";
-import { IconPhoneCall, IconAt } from "@tabler/icons";
+import { createStyles, Avatar, Text, Group, Flex, Title } from "@mantine/core";
+import { IconMail } from "@tabler/icons";
 
 const useStyles = createStyles((theme) => ({
   icon: {
@@ -17,20 +17,20 @@ const useStyles = createStyles((theme) => ({
 interface UserInfoIconsProps {
   image: string;
   name: string;
-  title: string;
+  branchName: string;
   email: string;
 }
 
-export function UserInfoIcons({
+export default function UserInfoIcons({
   image,
   name,
-  title,
+  branchName,
   email,
 }: UserInfoIconsProps) {
   const { classes } = useStyles();
   return (
     <div>
-      <Group noWrap>
+      <Flex direction="column" align="center" justify="center">
         <Avatar src={image} size={94} radius="md" />
         <div>
           <Text
@@ -39,20 +39,24 @@ export function UserInfoIcons({
             weight={700}
             color="dimmed"
           >
-            {title}
+            {branchName}
           </Text>
 
-          <Text size="lg" weight={500} className={classes.name}>
+          <Title order={1} weight={500} className={classes.name}>
             {name}
-          </Text>
+          </Title>
 
-          <Group noWrap spacing={10} mt={3}>
-            <IconAt stroke={1.5} size={16} className={classes.icon} />
-            <Text size="xs" color="dimmed">
+          <Flex align="center" justify="center" gap="10" mt={3}>
+            <IconMail stroke={1.5} className={classes.icon} />
+            &nbsp;
+            <Text size="lg">
               {email}
             </Text>
-          </Group>
+          </Flex>
         </div>
+      </Flex>
+      <Group>
+        
       </Group>
     </div>
   );

@@ -190,18 +190,17 @@ export function VerticalNavbar() {
       <Navbar.Section className={classes.footer}>
         {loginStatus === "authenticated" ? (
           <>
-            <a
-              href="#"
+            <Link
+              href="/profile"
               className=""
-              onClick={(event) => event.preventDefault()}
             >
               <ProfileCard
                 name={session.user.name}
                 email={session.user.email}
                 image={session.user.image}
               />
-            </a>
-            <a
+            </Link>
+            <Link
               href="#logout"
               className={classes.link}
               onClick={(event) => {
@@ -211,10 +210,13 @@ export function VerticalNavbar() {
             >
               <IconLogout className={classes.linkIcon} stroke={1.5} />
               <span>Logout</span>
-            </a>
+            </Link>
           </>
         ) : (
-          <a className={classes.link+" cursor-pointer"} onClick={() => signIn("google")}>
+          <a
+            className={classes.link + " cursor-pointer"}
+            onClick={() => signIn()}
+          >
             <IconLogin className={classes.linkIcon} stroke={1.5} />
             <span>Login</span>
           </a>
