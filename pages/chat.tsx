@@ -7,19 +7,16 @@ import { useSession } from "next-auth/react";
 
 const Chat = () => {
   const [newMessage, setNewMessage] = useState("");
-  const ref = React.useRef<HTMLDivElement>(null);
-  const { data, error, isLoading } = useSWR("/api/chats", fetcher, {
+  const {
+    data: messages,
+    error,
+    isLoading,
+  } = useSWR("/api/chats", fetcher, {
     refreshInterval: 1000,
   });
-  const [messages, setMessages] = useState<any>([]);
   useSession({
     required: true,
   });
-
-  useEffect(() => {
-    ref.current?.scrollIntoView({ behavior: "smooth" });
-    setMessages(data);
-  }, [data]);
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -39,10 +36,7 @@ const Chat = () => {
       if (!res.ok) {
         throw new Error(data.error || "Something went wrong");
       } else {
-        // Scroll to bottom
-        ref.current?.scrollIntoView({ behavior: "smooth" });
         setNewMessage("");
-        setMessages([...messages, data]);
       }
     }
   };
@@ -60,7 +54,7 @@ const Chat = () => {
             Chat
           </h1>
         </div>
-        <div ref={ref} className="flex-1 overflow-y-scroll">
+        <div className="flex-1 overflow-y-scroll">
           {messages ? (
             messages.map(
               (message: { id: number; user: string; message: string }) => (
