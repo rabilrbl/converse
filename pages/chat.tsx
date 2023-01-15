@@ -1,53 +1,56 @@
-import { ThemeContext } from "@emotion/react";
+import useSWR from "swr";
+import fetcher from "../lib/fetcher";
 import { Box, Container, Divider, Text, useMantineTheme } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { MessageInput } from "../components/Chat/MessageInput";
+import { useSession } from "next-auth/react";
 
 const Chat = () => {
-  const [messages, setMessages] = useState<any>([]);
   const [newMessage, setNewMessage] = useState("");
+  const ref = React.useRef<HTMLDivElement>(null);
+  const { data, error, isLoading } = useSWR("/api/chats", fetcher, {
+    refreshInterval: 1000,
+  });
+  const [messages, setMessages] = useState<any>([]);
+  useSession({
+    required: true,
+  });
 
   useEffect(() => {
-    async function fetchMessages() {
-      setMessages([
-        {
-          id: 1,
-          user: "User 1",
-          text: "Hello World",
-        },
-        {
-          id: 2,
-          user: "User 2",
-          text: "Hello World",
-        },
-        {
-          id: 3,
-          user: "User 3",
-          text: "Hello World",
-        },
-      ]);
-    }
-
-    fetchMessages();
-  }, []);
+    ref.current?.scrollIntoView({ behavior: "smooth" });
+    setMessages(data);
+  }, [data]);
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    // await axios.post("http://my-api.com/messages", {
-    //   message: newMessage,
-    // });
-    // setNewMessage("");
-    setMessages([
-      ...messages,
-      {
-        id: messages.length + 1,
-        user: "User",
-        text: newMessage,
-      },
-    ]);
+    if (!newMessage) {
+      return;
+    } else {
+      const res = await fetch("/api/chats", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: newMessage,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Something went wrong");
+      } else {
+        // Scroll to bottom
+        ref.current?.scrollIntoView({ behavior: "smooth" });
+        setNewMessage("");
+        setMessages([...messages, data]);
+      }
+    }
   };
 
   const theme = useMantineTheme();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Failed to load</div>;
 
   return (
     <Container>
@@ -57,35 +60,41 @@ const Chat = () => {
             Chat
           </h1>
         </div>
-        <div className="flex-1 overflow-y-scroll">
-          {messages.map((message: { id: number; user: string; text: string }) => (
-            <div key={message.id}>
-              <Box
-                sx={(theme) => ({
-                  backgroundColor:
-                    theme.colorScheme === "dark"
-                      ? theme.colors.dark[6]
-                      : theme.colors.gray[0],
-                  textAlign: "start",
-                  padding: theme.spacing.md,
-                  borderRadius: theme.radius.md,
-                  cursor: "default",
-                  "&:hover": {
-                    backgroundColor:
-                      theme.colorScheme === "dark"
-                        ? theme.colors.dark[5]
-                        : theme.colors.gray[1],
-                  },
-                })}
-              >
-                <Text fz="xs" fw="bold" color={theme.colors.blue[2]}>
-                  {message.user}
-                </Text>
-                <p className="">{message.text}</p>
-              </Box>
-              <Divider my="sm" />
-            </div>
-          ))}
+        <div ref={ref} className="flex-1 overflow-y-scroll">
+          {messages ? (
+            messages.map(
+              (message: { id: number; user: string; message: string }) => (
+                <div key={message.id}>
+                  <Box
+                    sx={(theme) => ({
+                      backgroundColor:
+                        theme.colorScheme === "dark"
+                          ? theme.colors.dark[6]
+                          : theme.colors.gray[0],
+                      textAlign: "start",
+                      padding: theme.spacing.md,
+                      borderRadius: theme.radius.md,
+                      cursor: "default",
+                      "&:hover": {
+                        backgroundColor:
+                          theme.colorScheme === "dark"
+                            ? theme.colors.dark[5]
+                            : theme.colors.gray[1],
+                      },
+                    })}
+                  >
+                    <Text fz="xs" fw="bold" color={theme.colors.blue[2]}>
+                      {message.user}
+                    </Text>
+                    <p className="">{message.message}</p>
+                  </Box>
+                  <Divider my="sm" />
+                </div>
+              )
+            )
+          ) : (
+            <div>No messages</div>
+          )}
         </div>
         <form onSubmit={handleSubmit} className="px-4 py-2 shadow-md">
           <MessageInput
