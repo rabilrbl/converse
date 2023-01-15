@@ -15,6 +15,7 @@ const Posts = () => {
     refreshInterval: 5000,
   });
 
+  if (error) return <div>Failed to load</div>;
   return (
     <Container>
       <Flex className="gap-2 justify-between">
