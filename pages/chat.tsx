@@ -12,7 +12,7 @@ const Chat = () => {
     error,
     isLoading,
   } = useSWR("/api/chats", fetcher, {
-    refreshInterval: 1000,
+    refreshInterval: 500,
   });
   useSession({
     required: true,
