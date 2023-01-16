@@ -13,9 +13,8 @@ export default function Profile({ user }) {
     required: true,
   });
   const [bio, setBio] = useInputState(user.bio);
-  const [debouncedBio] = useDebouncedValue(bio, 5000);
+  const [debouncedBio] = useDebouncedValue(bio, 3000);
   const [dob, setDob] = useState(user.dob);
-  const [debouncedDob] = useDebouncedValue(dob, 1000);
 
   useEffect(() => {
     const updateBio = async (bio) => {
@@ -61,7 +60,7 @@ export default function Profile({ user }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          dob: dob,
+          dob: new Date(dob).setDate(new Date(dob).getDate() + 1),
         }),
       })
         .then((res) => res.json())
@@ -86,8 +85,8 @@ export default function Profile({ user }) {
           alert(err);
         });
     };
-    updateDOB(debouncedDob);
-  }, [debouncedDob, user.dob]);
+    updateDOB(dob);
+  }, [dob, user.dob]);
 
   return (
     <Container size="sm">
@@ -106,7 +105,7 @@ export default function Profile({ user }) {
               <DatePicker
                 value={new Date(dob)}
                 clearable={false}
-                onChange={(value) => setDob(value.toDateString())}
+                onChange={setDob}
               />
             </div>
             <div>
