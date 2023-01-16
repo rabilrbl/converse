@@ -7,7 +7,7 @@ const CalendarPage = () => {
         width="1200"
         height="650"
         style={{
-          backgroundColor: "black",
+          borderRadius: "10px",
         }}
       ></iframe>
     </div>
