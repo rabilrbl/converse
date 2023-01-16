@@ -9,7 +9,9 @@ export default async function handler(
   const session = await getSession({ req });
   const method = req.method;
   if (!session) {
-    res.status(401).end();
+    res.status(401).end({
+      error: "Unauthorized",
+    });
     return;
   }
   switch (method) {
@@ -45,11 +47,7 @@ export default async function handler(
       const chat = await prisma.chat.create({
         data: {
           message,
-          user: {
-            connect: {
-              id: Number.parseInt(session.user.id),
-            },
-          },
+          userId: Number.parseInt(session.user.id),
         },
         select: {
           id: true,
