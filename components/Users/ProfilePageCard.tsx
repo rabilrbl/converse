@@ -30,7 +30,7 @@ export default function UserInfoIcons({
   const { classes } = useStyles();
   return (
     <div>
-      <Flex direction="column" align="center" justify="center">
+      <Flex direction="column" align="center" justify="center" gap={8}>
         <Avatar src={image} size={94} radius="md" />
         <div>
           <Text
