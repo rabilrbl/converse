@@ -1,25 +1,94 @@
-import {
-  Avatar,
-  Text,
-  Container,
-  Flex,
-  Group,
-  Title,
-  Textarea,
-  useInputProps,
-} from "@mantine/core";
+import { Text, Container, Group, Title, Textarea } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import prisma from "../../lib/prisma";
 import { getSession, useSession } from "next-auth/react";
 import ProfilePageCard from "../../components/Users/ProfilePageCard";
 import { showNotification } from "@mantine/notifications";
 import { IconCheck, IconExclamationCircle } from "@tabler/icons";
-import { useRouter } from "next/router";
+import { useDebouncedValue, useInputState } from "@mantine/hooks";
+import { useEffect, useState } from "react";
 
 export default function Profile({ user }) {
   useSession({
     required: true,
   });
+  const [bio, setBio] = useInputState(user.bio);
+  const [debouncedBio] = useDebouncedValue(bio, 5000);
+  const [dob, setDob] = useState(user.dob);
+  const [debouncedDob] = useDebouncedValue(dob, 1000);
+
+  useEffect(() => {
+    const updateBio = async (bio) => {
+      if (!bio || bio === user.bio) return;
+      fetch("/api/users/update", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          bio: bio,
+        }),
+      })
+        .then((res) => res.json())
+        .then((resData) => {
+          if (resData.error) {
+            showNotification({
+              title: "Error",
+              message: resData.error,
+              color: "red",
+              icon: <IconExclamationCircle />,
+            });
+          }
+        })
+        .catch((err) => {
+          showNotification({
+            title: "Error",
+            message: err,
+            color: "red",
+            icon: <IconExclamationCircle />,
+          });
+        });
+    };
+    updateBio(debouncedBio);
+  }, [debouncedBio, user.bio]);
+
+  useEffect(() => {
+    const updateDOB = async (dob) => {
+      if (!dob || dob === user.dob) return;
+      fetch("/api/users/update", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          dob: dob,
+        }),
+      })
+        .then((res) => res.json())
+        .then((resData) => {
+          if (resData.error) {
+            showNotification({
+              title: "Error",
+              message: resData.error,
+              color: "red",
+              icon: <IconExclamationCircle />,
+            });
+          } else {
+            showNotification({
+              title: "Success",
+              message: "Your profile has been updated",
+              color: "green",
+              icon: <IconCheck />,
+            });
+          }
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    };
+    updateDOB(debouncedDob);
+  }, [debouncedDob, user.dob]);
+
   return (
     <Container size="sm">
       <Title order={1}>Profile</Title>
@@ -35,70 +104,14 @@ export default function Profile({ user }) {
             <div>
               <Text>DOB</Text>
               <DatePicker
-                value={user.dob && new Date(user.dob)}
+                value={new Date(dob)}
                 clearable={false}
-                onChange={(value) => {
-                  fetch("/api/users/update", {
-                    method: "PUT",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      dob: value,
-                    }),
-                  })
-                    .then((res) => res.json())
-                    .then((resData) => {
-                      if (resData.error) {
-                        showNotification({
-                          title: "Error",
-                          message: resData.error,
-                          color: "red",
-                          icon: <IconExclamationCircle />,
-                        });
-                      } else {
-                        showNotification({
-                          title: "Success",
-                          message: "Your profile has been updated",
-                          color: "green",
-                          icon: <IconCheck />,
-                        });
-                      }
-                    })
-                    .catch((err) => {
-                      alert(err);
-                    });
-                }}
+                onChange={(value) => setDob(value.toDateString())}
               />
             </div>
             <div>
               <Text>Bio</Text>
-              <Textarea
-                value={user.bio || ""}
-                onChange={(e) => {
-                  // fetch("/api/users/update", {
-                  //   method: "PUT",
-                  //   headers: {
-                  //     "Content-Type": "application/json",
-                  //   },
-                  //   body: JSON.stringify({
-                  //     bio: e.target.value,
-                  //   }),
-                  // })
-                  //   .then((res) => res.json())
-                  //   .then((resData) => {
-                  //     if (resData.error) {
-                  //       alert(resData.error);
-                  //     } else {
-                  //       alert("Success");
-                  //     }
-                  //   })
-                  //   .catch((err) => {
-                  //     alert(err);
-                  //   });
-                  console.log(e.target.value);
-                }}
-              />
+              <Textarea value={bio} onChange={setBio} />
             </div>
           </div>
         </Group>
