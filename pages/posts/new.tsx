@@ -54,7 +54,8 @@ const New = (props: { threads: any }) => {
       content:
         '<h2 style="text-align: center;">Welcome to Converse rich text editor</h2><code>RichTextEditor</code> component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users.<ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li></ul>',
       thread: 0,
-      attachments: [],
+      banner: "",
+      attachments: [""],
     },
     validate: {
       title: (value) => {
@@ -85,12 +86,20 @@ const New = (props: { threads: any }) => {
       <Title order={1}>New Post</Title>
       <form
         onSubmit={form.onSubmit(async (values) => {
+          const formData = new FormData();
+          formData.append("title", values.title);
+          formData.append("content", values.content);
+          formData.append("thread", values.thread.toString());
+          formData.append("banner", values.banner);
+          values.attachments.forEach((attachment) => {
+            formData.append("attachments", attachment);
+          });
           fetch("/api/posts", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(values),
+            body: formData,
           }).then((res) => {
             if (res.ok) {
               router.push("/posts");
@@ -120,6 +129,13 @@ const New = (props: { threads: any }) => {
             maxDropdownHeight={400}
             nothingFound="Nobody here"
             {...form.getInputProps("thread")}
+          />
+        </div>
+        <div className="mb-4">
+          <FileInput
+            label="Banner"
+            placeholder="Banner"
+            {...form.getInputProps("banner")}
           />
         </div>
         <div className="mb-4 w-full">

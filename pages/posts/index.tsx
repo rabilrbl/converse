@@ -34,10 +34,11 @@ const Posts = () => {
       <div className="mt-6 grid grid-cols-3 gap-4">
         {!isLoading ? (
           posts.map((post, index) => {
+            const banner = post.banner;
             return (
               <ArticleCardVertical
                 key={index}
-                image="https://images.unsplash.com/photo-1602080858428-57174f9431cf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80"
+                image={banner}
                 {...post}
               />
             );
