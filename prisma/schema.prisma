@@ -52,14 +52,14 @@ model Thread {
   posts       Posts[]
 }
 
-model Calendar {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  date        DateTime
-  eventName   String
-  description String
-}
+// model Calendar {
+//   id          Int      @id @default(autoincrement())
+//   createdAt   DateTime @default(now())
+//   updatedAt   DateTime @updatedAt
+//   date        DateTime
+//   eventName   String
+//   description String
+// }
 
 model Uploads {
   id        Int      @id @default(autoincrement())
