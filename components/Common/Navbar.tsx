@@ -9,6 +9,7 @@ import {
   Box,
   Code,
   Divider,
+  Flex,
 } from "@mantine/core";
 import {
   IconLogout,
@@ -26,6 +27,9 @@ import { useRouter } from "next/router";
 import ProfileCard from "../Users/ProfileCard";
 import Link from "next/link";
 import { useSession, signIn, signOut } from "next-auth/react";
+import logo from "../../public/logo.svg";
+import Image from "next/image";
+import converseText from "../../public/CONVERSE.png";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef("icon");
@@ -151,12 +155,18 @@ export function VerticalNavbar() {
       className={router.pathname === "/login" ? "hidden" : "hidden md:block"}
     >
       <Navbar.Section grow className="py-2">
-        <Group className={classes.header} position="apart">
-          {/* <MantineLogo size={28} /> */}
-          <Link href="/" onClick={() => setActive("")}>
-            <h1 className="font-extrabold text-sky-500">Converse</h1>
-          </Link>
-        </Group>
+        <Link href="/" onClick={() => setActive("")}>
+          <Flex
+            className={classes.header}
+            direction="column"
+            justify="center"
+            align="center"
+          >
+            <Image alt="Converse logo" src={logo} className="h-64 w-auto -mt-20" />
+            <h1 className="font-extrabold -mt-16 bg-gradient-to-br from-red-500 to-sky-500 bg-clip-text text-transparent text-5xl font-sans">
+              Converse</h1>
+          </Flex>
+        </Link>
         {links}
       </Navbar.Section>
 
@@ -190,10 +200,7 @@ export function VerticalNavbar() {
       <Navbar.Section className={classes.footer}>
         {loginStatus === "authenticated" ? (
           <>
-            <Link
-              href="/profile"
-              className=""
-            >
+            <Link href="/profile" className="">
               <ProfileCard
                 name={session.user.name}
                 email={session.user.email}

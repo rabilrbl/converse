@@ -1,10 +1,11 @@
-import { Button, Container, Group, Text, Title } from "@mantine/core";
+import { Avatar, Badge, Container, Flex, Group, Text, Title } from "@mantine/core";
 import { RichTextEditor } from "@mantine/tiptap";
 import { PrismaClient } from "@prisma/client";
 import { IconArrowLeft } from "@tabler/icons";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { GetServerSideProps } from "next";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Back from "../../components/Common/Back";
 
@@ -28,15 +29,19 @@ const ViewPost = (props: {
     editable: false,
     content: props.post.content,
   });
+
   return (
     <Container>
       <Back />
       <Title order={1}>{props.post.title}</Title>
-      <Group className="divide-x-2 divide-dotted">
-        <Text>{props.post.thread.topic}</Text>
-        <Text>{props.post.author.name}</Text>
+        <Badge>{props.post.thread.topic}</Badge>
+      <Flex justify="space-between" className="my-4">
+        <div className="flex items-center justify-center gap-2">
+          <Avatar src={props.post.author.image} size={40} radius="md" />
+          <Title order={4}>{props.post.author.name}</Title>
+        </div>
         <Text>{props.post.published ? "Published" : "Draft"}</Text>
-      </Group>
+      </Flex>
       <RichTextEditor editor={editor}>
         <RichTextEditor.Content />
       </RichTextEditor>

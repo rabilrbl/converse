@@ -32,8 +32,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const content = req.body.content;
       const threadId = Number.parseInt(req.body.thread);
       const authorId = Number.parseInt(session.user.id);
-      const banner = req.body.banner;
-      const attachments = req.body.attachments;
+      // const banner = req.body.banner;
+      // const attachments = req.body.attachments;
       if (!title || !content || !threadId) {
         res.status(400).end({
           error: "Bad Request",
@@ -52,8 +52,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           content,
           authorId,
           threadId,
-          banner,
-          attachments,
+          // banner,
+          // attachments,
         },
       });
       res.status(201).json(newPost);

@@ -26,6 +26,14 @@ interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
   value: Number;
 }
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "10mb",
+    },
+  },
+};
+
 const SelectItem = forwardRef<HTMLDivElement, ItemProps>(function SelectItem(
   { image, label, description, value, ...others }: ItemProps,
   ref
@@ -86,20 +94,16 @@ const New = (props: { threads: any }) => {
       <Title order={1}>New Post</Title>
       <form
         onSubmit={form.onSubmit(async (values) => {
-          const formData = new FormData();
-          formData.append("title", values.title);
-          formData.append("content", values.content);
-          formData.append("thread", values.thread.toString());
-          formData.append("banner", values.banner);
-          values.attachments.forEach((attachment) => {
-            formData.append("attachments", attachment);
-          });
           fetch("/api/posts", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: formData,
+            body: JSON.stringify({
+              title: values.title,
+              content: values.content,
+              thread: values.thread,
+            }),
           }).then((res) => {
             if (res.ok) {
               router.push("/posts");
