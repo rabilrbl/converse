@@ -27,7 +27,7 @@ export default async function handle(
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  upload.single("banner")(req as any, res as any, async (err) => {
+  upload.fields([{ name: "attachments" }])(req as any, res as any, async (err) => {
     if (err) {
       return res.status(400).json({ message: err.message });
     }
@@ -41,20 +41,22 @@ export default async function handle(
     if (post.authorId !== Number.parseInt(session.user.id)) {
       return res.status(403).json({ message: "Forbidden" });
     }
-    const banner = req.file;
-    const result = await prisma.posts.update({
-      where: { id: postId },
-      data: {
-        banner: `/uploads/${banner.filename}`,
-      },
+    const attachments = req.files["attachments"] as Express.Multer.File[];
+    const result = await prisma.uploads.createMany({
+      data: attachments.map((attachment) => ({
+        file: `/uploads/${attachment.filename}`,
+        postId,
+        fileName: attachment.originalname,
+        fileType: attachment.mimetype,
+        userId: Number.parseInt(session.user.id),
+      })),
     });
     return res.status(200).json(result);
   });
-
 }
 
 export const config = {
-  api: {
-    bodyParser: false,
-  },
+    api: {
+        bodyParser: false,
+    },
 };

@@ -23,6 +23,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               topic: true,
             },
           },
+          banner: true,
+          attachments: true,
         },
       });
       res.status(200).json(posts);

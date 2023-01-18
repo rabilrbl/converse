@@ -108,14 +108,24 @@ const New = (props: { threads: any }) => {
             if (res.ok) {
               const formData = new FormData();
               formData.append("banner", values.banner);
-              // values.attachments.forEach((attachment) => {
-              //   formData.append("attachments", attachment);
-              // });
               const post = await res.json();
               formData.append("postId", post.id);
               fetch("/api/posts/upload", {
                 method: "POST",
                 body: formData,
+              }).then((res) => {
+                if (!res.ok) {
+                  alert("Error");
+                }
+              });
+              const attachmentFormData = new FormData();
+              attachmentFormData.append("postId", post.id);
+              values.attachments.forEach((attachment) => {
+                attachmentFormData.append("attachments", attachment);
+              });
+              fetch("/api/posts/attachments", {
+                method: "POST",
+                body: attachmentFormData,
               }).then((res) => {
                 if (res.ok) {
                   router.push("/posts");

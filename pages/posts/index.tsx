@@ -34,11 +34,10 @@ const Posts = () => {
       <div className="mt-6 grid grid-cols-3 gap-4">
         {!isLoading ? (
           posts.map((post, index) => {
-            const banner = `/${post.id}.png`;
             return (
               <ArticleCardVertical
                 key={index}
-                image={banner}
+                image={post.banner}
                 {...post}
               />
             );
