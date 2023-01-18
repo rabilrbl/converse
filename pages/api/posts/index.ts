@@ -23,6 +23,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               topic: true,
             },
           },
+          updatedAt: true,
           banner: true,
           attachments: true,
         },

@@ -1,11 +1,4 @@
-import {
-  Avatar,
-  Badge,
-  Container,
-  Flex,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Avatar, Badge, Container, Flex, Text, Title, Image } from "@mantine/core";
 import { RichTextEditor } from "@mantine/tiptap";
 import { PrismaClient } from "@prisma/client";
 import { useEditor } from "@tiptap/react";
@@ -51,23 +44,24 @@ const ViewPost = (props: {
       </Flex>
       <RichTextEditor editor={editor} className="rounded-xl px-2 py-4">
         <RichTextEditor.Content />
-        {/* Display all attachments with filename and link */}\
       </RichTextEditor>
-      { props.post.attachments.length > 0 && <div className="p-2 border border-slate-500 mt-4 rounded-xl">
-        <Title order={2}>Attachments</Title>
-        <ul className="list-disc">
-          {props.post.attachments.map((attachment) => (
-            <li className="ml-4" key={attachment.id}>
-              <a
-                className="text-blue-500 underline text-xl hover:text-2xl transition-all ease-in-out duration-200 overflow-auto"
-                href={attachment.file}
-              >
-                {attachment.fileName}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>}
+      {props.post.attachments.length > 0 && (
+        <div className="p-2 border border-slate-500 mt-4 rounded-xl">
+          <Title order={3}>Attachments</Title>
+          <ul className="list-disc">
+            {props.post.attachments.map((attachment) => (
+              <li className="ml-4" key={attachment.id}>
+                <a
+                  className="text-blue-500 underline text-xl hover:text-2xl transition-all ease-in-out duration-200 overflow-auto"
+                  href={attachment.file}
+                >
+                  {attachment.fileName}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </Container>
   );
 };

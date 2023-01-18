@@ -54,6 +54,7 @@ interface ArticleCardVerticalProps {
     name: string;
     image: string;
   };
+  updatedAt: string;
 }
 
 export function ArticleCardVertical({
@@ -62,6 +63,7 @@ export function ArticleCardVertical({
   thread,
   title,
   author,
+  updatedAt,
 }: ArticleCardVerticalProps) {
   const { classes, theme } = useStyles();
   const router = useRouter();
@@ -89,7 +91,7 @@ export function ArticleCardVertical({
         <div>
           <Text weight={500}>{author.name}</Text>
           <Text size="xs" color="dimmed">
-            2 days ago
+          {new Date(updatedAt).toDateString()}
           </Text>
         </div>
       </Group>
