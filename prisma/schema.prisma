@@ -66,8 +66,8 @@ model Uploads {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   userId    Int
-  file      Bytes
-  fileName  String
+  file      String
+  fileName  String?
   fileType  String?
   postId    Int
   encoding  String?

@@ -15,7 +15,7 @@ import { useForm } from "@mantine/form";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { forwardRef } from "react";
-import { PrismaClient } from "@prisma/client";
+import prisma from "../../lib/prisma";
 import TextEditor from "../../components/Posts/TextEditor";
 import Back from "../../components/Common/Back";
 
@@ -104,9 +104,25 @@ const New = (props: { threads: any }) => {
               content: values.content,
               thread: values.thread,
             }),
-          }).then((res) => {
+          }).then(async (res) => {
             if (res.ok) {
-              router.push("/posts");
+              const formData = new FormData();
+              formData.append("banner", values.banner);
+              // values.attachments.forEach((attachment) => {
+              //   formData.append("attachments", attachment);
+              // });
+              const post = await res.json();
+              formData.append("postId", post.id);
+              fetch("/api/posts/upload", {
+                method: "POST",
+                body: formData,
+              }).then((res) => {
+                if (res.ok) {
+                  router.push("/posts");
+                } else {
+                  alert("Error");
+                }
+              });
             } else {
               alert("Error");
             }
@@ -168,7 +184,7 @@ const New = (props: { threads: any }) => {
 };
 
 export async function getServerSideProps() {
-  const res = await new PrismaClient().thread.findMany();
+  const res = await prisma.thread.findMany();
   let threads = res.map((thread) => {
     return {
       label: thread.topic,
