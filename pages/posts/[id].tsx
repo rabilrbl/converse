@@ -1,6 +1,6 @@
 import { Avatar, Badge, Container, Flex, Text, Title, Image } from "@mantine/core";
 import { RichTextEditor } from "@mantine/tiptap";
-import { PrismaClient } from "@prisma/client";
+import prisma from "../../lib/prisma";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { GetServerSideProps } from "next";
@@ -77,7 +77,7 @@ const ViewPost = (props: {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.params.id;
-  const post = await new PrismaClient().posts.findUnique({
+  const post = await prisma.posts.findUnique({
     where: {
       id: Number(id),
     },
