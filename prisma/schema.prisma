@@ -90,7 +90,7 @@ model Community {
   updatedAt   DateTime @updatedAt
   name        String
   description String
-  logo        Bytes?
+  logo        String?
   contact     String?
   website     String?
 }

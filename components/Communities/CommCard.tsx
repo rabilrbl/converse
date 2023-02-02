@@ -1,13 +1,14 @@
 import { Avatar, Text, Button, Paper } from '@mantine/core';
 
 interface UserInfoActionProps {
-  logo: string;
+  logo?: string;
   name: string;
-//   email: string;
-  about: string;
+  description: string;
+  website?: string;
+  contact?: string;
 }
 
-export function CommCard({ logo, name, about }: UserInfoActionProps) {
+export function CommCard({ logo, name, description }: UserInfoActionProps) {
   return (
     <Paper
       radius="md"
@@ -22,7 +23,7 @@ export function CommCard({ logo, name, about }: UserInfoActionProps) {
         {name}
       </Text>
       <Text align="center" color="dimmed" size="sm">
-        {about}
+        {description}
       </Text>
 
       <Button variant="default" fullWidth mt="md">
