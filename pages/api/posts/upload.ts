@@ -9,7 +9,7 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + "-" + file.originalname);
-  }
+  },
 });
 export const upload = multer({ storage });
 
@@ -42,6 +42,9 @@ export default async function handle(
       return res.status(403).json({ message: "Forbidden" });
     }
     const banner = (req as any).file;
+    if (!banner) {
+      return res.status(400).json({ message: "No banner provided" });
+    }
     const result = await prisma.posts.update({
       where: { id: postId },
       data: {
@@ -50,7 +53,6 @@ export default async function handle(
     });
     return res.status(200).json(result);
   });
-
 }
 
 export const config = {
