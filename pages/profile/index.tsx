@@ -103,9 +103,10 @@ export default function Profile({ user }) {
             <div>
               <Text>DOB</Text>
               <DatePicker
-                value={new Date(dob)}
+                value={dob ? new Date(dob) : null}
                 clearable={false}
                 onChange={setDob}
+                placeholder="Please choose your DOB"
               />
             </div>
             <div>
@@ -122,7 +123,12 @@ export default function Profile({ user }) {
 export async function getServerSideProps({ req, res }) {
   const session = await getSession({ req });
   if (!session) {
-    return res.redirect("/api/auth/signin");
+    return {
+      redirect: {
+        destination: "/api/auth/signin",
+        permanent: false,
+      },
+    };
   } else {
     let user = await prisma.user.findUnique({
       where: {
@@ -139,7 +145,8 @@ export async function getServerSideProps({ req, res }) {
       },
     });
 
-    user = JSON.parse(JSON.stringify(user));
+    user.dob = user.dob ? (user.dob.toISOString().split("T")[0] as any) : null;
+
     return {
       props: {
         user: user,
