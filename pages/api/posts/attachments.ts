@@ -47,7 +47,7 @@ export default async function handle(
       const attachments = (req as any).files[
         "attachments"
       ] as Express.Multer.File[];
-      if (attachments.length > 0) {
+      if (attachments && attachments.length > 0) {
         const result = await prisma.uploads.createMany({
           data: attachments.map((attachment) => ({
             file: `/uploads/${attachment.filename}`,
