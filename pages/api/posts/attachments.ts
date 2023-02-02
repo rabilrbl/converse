@@ -20,7 +20,7 @@ export default async function handle(
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  upload.fields([{ name: "attachments" }])(
+  upload.fields([{ name: "attachments", maxCount: 5 }])(
     req as any,
     res as any,
     async (err) => {
@@ -54,7 +54,7 @@ export default async function handle(
             data: {
               postId,
               userId: Number.parseInt(session.user.id),
-              file: `${file.id}`
+              file: `${file.id}`,
             },
           });
         });
