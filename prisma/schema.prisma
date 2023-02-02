@@ -1,0 +1,130 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  email         String    @unique
+  name          String
+  dob           DateTime? @db.Date
+  gender        String?   @db.VarChar(1)
+  bio           String?
+  branchName    String?
+  password      String?
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  chat          Chat[]
+  posts         Posts[]
+  sessions      Session[]
+  uploads       Uploads[]
+}
+
+model Posts {
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  title       String
+  content     String?
+  published   Boolean   @default(false)
+  authorId    Int
+  threadId    Int
+  banner      String?
+  author      User      @relation(fields: [authorId], references: [id])
+  thread      Thread    @relation(fields: [threadId], references: [id])
+  attachments Uploads[]
+}
+
+model Thread {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  topic       String   @unique
+  description String?
+  image       String?
+  posts       Posts[]
+}
+
+// model Calendar {
+//   id          Int      @id @default(autoincrement())
+//   createdAt   DateTime @default(now())
+//   updatedAt   DateTime @updatedAt
+//   date        DateTime
+//   eventName   String
+//   description String
+// }
+
+model Uploads {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    Int
+  file      String
+  fileName  String?
+  fileType  String?
+  postId    Int
+  encoding  String?
+  posts     Posts    @relation(fields: [postId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Chat {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    Int
+  message   String
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Community {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  name        String
+  description String
+  logo        String?
+  contact     String?
+  website     String?
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            Int
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       Int
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}

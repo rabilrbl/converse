@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Uploads" ALTER COLUMN "file" SET DATA TYPE TEXT,
+ALTER COLUMN "fileName" DROP NOT NULL;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   createStyles,
   Navbar,
@@ -9,6 +9,7 @@ import {
   Box,
   Code,
   Divider,
+  Flex,
 } from "@mantine/core";
 import {
   IconLogout,
@@ -19,11 +20,16 @@ import {
   IconFloatLeft,
   IconMessage,
   IconAffiliate,
+  IconLogin,
 } from "@tabler/icons";
 // import { MantineLogo } from "@mantine/ds";
 import { useRouter } from "next/router";
 import ProfileCard from "../Users/ProfileCard";
 import Link from "next/link";
+import { useSession, signIn, signOut } from "next-auth/react";
+import logo from "../../public/logo.svg";
+import Image from "next/image";
+import converseText from "../../public/CONVERSE.png";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef("icon");
@@ -123,6 +129,8 @@ export function VerticalNavbar() {
       ""
   );
 
+  const { data: session, status: loginStatus } = useSession();
+
   const links = data.map((item) => (
     <Link
       className={cx(classes.link, {
@@ -147,12 +155,18 @@ export function VerticalNavbar() {
       className={router.pathname === "/login" ? "hidden" : "hidden md:block"}
     >
       <Navbar.Section grow className="py-2">
-        <Group className={classes.header} position="apart">
-          {/* <MantineLogo size={28} /> */}
-          <Link href="/" onClick={() => setActive("")}>
-            <h1 className="font-extrabold text-sky-500">Converse</h1>
-          </Link>
-        </Group>
+        <Link href="/" onClick={() => setActive("")}>
+          <Flex
+            className={classes.header}
+            direction="column"
+            justify="center"
+            align="center"
+          >
+            <Image alt="Converse logo" src={logo} className="h-64 w-auto -mt-20" />
+            <h1 className="font-extrabold -mt-16 bg-gradient-to-br from-red-500 to-sky-500 bg-clip-text text-transparent text-5xl font-sans">
+              Converse</h1>
+          </Flex>
+        </Link>
         {links}
       </Navbar.Section>
 
@@ -184,22 +198,36 @@ export function VerticalNavbar() {
       />
 
       <Navbar.Section className={classes.footer}>
-        <a href="#" className="" onClick={(event) => event.preventDefault()}>
-          <ProfileCard
-            name="John Snow"
-            email="john@snow.com"
-            image="https://i.pravatar.cc/300"
-          />
-        </a>
-
-        <a
-          href="#"
-          className={classes.link}
-          onClick={(event) => event.preventDefault()}
-        >
-          <IconLogout className={classes.linkIcon} stroke={1.5} />
-          <span>Logout</span>
-        </a>
+        {loginStatus === "authenticated" ? (
+          <>
+            <Link href="/profile" className="">
+              <ProfileCard
+                name={session.user.name}
+                email={session.user.email}
+                image={session.user.image}
+              />
+            </Link>
+            <Link
+              href="#logout"
+              className={classes.link}
+              onClick={(event) => {
+                event.preventDefault();
+                signOut();
+              }}
+            >
+              <IconLogout className={classes.linkIcon} stroke={1.5} />
+              <span>Logout</span>
+            </Link>
+          </>
+        ) : (
+          <a
+            className={classes.link + " cursor-pointer"}
+            onClick={() => signIn()}
+          >
+            <IconLogin className={classes.linkIcon} stroke={1.5} />
+            <span>Login</span>
+          </a>
+        )}
       </Navbar.Section>
     </Navbar>
   );

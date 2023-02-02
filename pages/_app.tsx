@@ -11,12 +11,20 @@ import {
 import "../styles/globals.css";
 import { useState } from "react";
 import { VerticalNavbar } from "../components/Common/Navbar";
+import { ModalsProvider } from "@mantine/modals";
+import { SessionProvider } from "next-auth/react";
+import { useRouter } from "next/router";
+import { NotificationsProvider } from "@mantine/notifications";
 
-export default function App(props: AppProps) {
-  const { Component, pageProps } = props;
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}) {
   const [colorScheme, setColorScheme] = useState<ColorScheme>("dark");
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
+
+  const router = useRouter();
 
   return (
     <>
@@ -40,9 +48,15 @@ export default function App(props: AppProps) {
             colorScheme: colorScheme,
           }}
         >
-          <AppShell navbar={<VerticalNavbar />}>
-            <Component {...pageProps} />
-          </AppShell>
+          <ModalsProvider>
+            <SessionProvider session={session}>
+            <NotificationsProvider>
+              <AppShell navbar={<VerticalNavbar />}>
+                <Component {...pageProps} />
+              </AppShell>
+            </NotificationsProvider>
+            </SessionProvider>
+          </ModalsProvider>
         </MantineProvider>
       </ColorSchemeProvider>
     </>
