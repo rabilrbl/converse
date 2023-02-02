@@ -5,7 +5,7 @@ import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { GetServerSideProps } from "next";
 import Back from "../../components/Common/Back";
-import { Uploads } from "@prisma/client";
+import { Uploads, File } from "@prisma/client";
 
 const ViewPost = (props: {
   post: {
@@ -23,11 +23,20 @@ const ViewPost = (props: {
     banner: string;
     attachments: Uploads[];
   };
+  files: File[];
 }) => {
   const editor = useEditor({
     extensions: [StarterKit],
     editable: false,
     content: props.post.content,
+  });
+
+  const attachFiles = props.files.map((file) => {
+    return {
+      id: file.id,
+      name: file.name,
+      url: `/api/file/${file.id}`,
+    };
   });
 
   return (
@@ -45,17 +54,17 @@ const ViewPost = (props: {
       <RichTextEditor editor={editor} className="rounded-xl px-2 py-4">
         <RichTextEditor.Content />
       </RichTextEditor>
-      {props.post.attachments.length > 0 && (
+      {attachFiles.length > 0 && (
         <div className="p-2 border border-slate-500 mt-4 rounded-xl">
           <Title order={3}>Attachments</Title>
           <ul className="list-disc">
-            {props.post.attachments.map((attachment) => (
-              <li className="ml-4" key={attachment.id}>
+            {attachFiles.map((file) => (
+              <li className="ml-4" key={file.id}>
                 <a
                   className="text-blue-500 underline text-xl hover:text-2xl transition-all ease-in-out duration-200 overflow-auto"
-                  href={attachment.file}
+                  href={file.url}
                 >
-                  {attachment.fileName}
+                  {file.name}
                 </a>
               </li>
             ))}
@@ -91,16 +100,26 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       banner: true,
       attachments: {
         select: {
-          id: true,
-          fileName: true,
           file: true,
         },
       },
     },
   });
+  const files = await prisma.file.findMany({
+    where: {
+      id: {
+        in: post.attachments.map((attachment) => Number(attachment.file)),
+      },
+    },
+    select: {
+      id: true,
+      name: true,
+    },
+  });
   return {
     props: {
       post,
+      files,
     },
   };
 };

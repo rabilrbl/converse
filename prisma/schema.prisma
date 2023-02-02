@@ -58,10 +58,7 @@ model Uploads {
   updatedAt DateTime @updatedAt
   userId    Int
   file      String
-  fileName  String?
-  fileType  String?
   postId    Int
-  encoding  String?
   posts     Posts    @relation(fields: [postId], references: [id])
   user      User     @relation(fields: [userId], references: [id])
 }

@@ -107,11 +107,11 @@ const New = (props: { threads: any }) => {
           }).then(async (res) => {
             if (res.ok) {
               const post = await res.json();
-              if (values.banner !== "") {
+              if (values.banner) {
                 const formData = new FormData();
                 formData.append("banner", values.banner);
                 formData.append("postId", post.id);
-                fetch("/api/posts/upload", {
+                await fetch("/api/posts/upload", {
                   method: "POST",
                   body: formData,
                 }).then((res) => {
@@ -128,7 +128,7 @@ const New = (props: { threads: any }) => {
                 values.attachments.forEach((attachment) => {
                   attachmentFormData.append("attachments", attachment);
                 });
-                fetch("/api/posts/attachments", {
+                await fetch("/api/posts/attachments", {
                   method: "POST",
                   body: attachmentFormData,
                 }).then((res) => {

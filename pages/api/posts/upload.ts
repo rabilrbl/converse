@@ -3,14 +3,7 @@ import multer from "multer";
 import prisma from "../../../lib/prisma";
 import { getSession } from "next-auth/react";
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/uploads");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
-  },
-});
+const storage = multer.memoryStorage();
 export const upload = multer({ storage });
 
 export default async function handle(
@@ -41,14 +34,22 @@ export default async function handle(
     if (post.authorId !== Number.parseInt(session.user.id)) {
       return res.status(403).json({ message: "Forbidden" });
     }
-    const banner = (req as any).file;
+    const banner = (req as any).file as Express.Multer.File;
     if (!banner) {
       return res.status(400).json({ message: "No banner provided" });
     }
+    const file = await prisma.file.create({
+      data: {
+        name: banner.originalname || "banner",
+        type: banner.mimetype,
+        size: banner.size,
+        buffer: banner.buffer,
+      },
+    });
     const result = await prisma.posts.update({
       where: { id: postId },
       data: {
-        banner: `/uploads/${banner.filename}`,
+        banner: `/api/file/${file.id}`,
       },
     });
     return res.status(200).json(result);
