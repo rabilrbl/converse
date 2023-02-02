@@ -3,14 +3,7 @@ import multer from "multer";
 import prisma from "../../../lib/prisma";
 import { getSession } from "next-auth/react";
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/uploads");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
-  },
-});
+const storage = multer.memoryStorage();
 export const upload = multer({ storage });
 
 export default async function handle(
@@ -47,17 +40,25 @@ export default async function handle(
       const attachments = (req as any).files[
         "attachments"
       ] as Express.Multer.File[];
-      if (attachments.length > 0) {
-        const result = await prisma.uploads.createMany({
-          data: attachments.map((attachment) => ({
-            file: `/uploads/${attachment.filename}`,
-            postId,
-            fileName: attachment.originalname,
-            fileType: attachment.mimetype,
-            userId: Number.parseInt(session.user.id),
-          })),
+      if (attachments && attachments.length > 0) {
+        attachments.forEach(async (attachment) => {
+          const file = await prisma.file.create({
+            data: {
+              name: attachment.originalname || "attachment",
+              type: attachment.mimetype,
+              size: attachment.size,
+              buffer: attachment.buffer,
+            },
+          });
+          await prisma.uploads.create({
+            data: {
+              postId,
+              userId: Number.parseInt(session.user.id),
+              file: `${file.id}`
+            },
+          });
         });
-        return res.status(200).json(result);
+        return res.status(200).json({ message: "Attachments uploaded" });
       } else {
         return res.status(200).json({
           message: "No files were found for attachment",

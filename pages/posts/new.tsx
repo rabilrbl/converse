@@ -106,33 +106,39 @@ const New = (props: { threads: any }) => {
             }),
           }).then(async (res) => {
             if (res.ok) {
-              const formData = new FormData();
-              formData.append("banner", values.banner);
               const post = await res.json();
-              formData.append("postId", post.id);
-              fetch("/api/posts/upload", {
-                method: "POST",
-                body: formData,
-              }).then((res) => {
-                if (!res.ok) {
-                  alert("Error");
-                }
-              });
-              const attachmentFormData = new FormData();
-              attachmentFormData.append("postId", post.id);
-              values.attachments.forEach((attachment) => {
-                attachmentFormData.append("attachments", attachment);
-              });
-              fetch("/api/posts/attachments", {
-                method: "POST",
-                body: attachmentFormData,
-              }).then((res) => {
-                if (res.ok) {
-                  router.push("/posts");
-                } else {
-                  alert("Error");
-                }
-              });
+              if (values.banner) {
+                const formData = new FormData();
+                formData.append("banner", values.banner);
+                formData.append("postId", post.id);
+                await fetch("/api/posts/upload", {
+                  method: "POST",
+                  body: formData,
+                }).then((res) => {
+                  if (!res.ok) {
+                    alert("Error");
+                  }
+                });
+              }
+              if (values.attachments[0] === "") {
+                router.push("/posts");
+              } else {
+                const attachmentFormData = new FormData();
+                attachmentFormData.append("postId", post.id);
+                values.attachments.forEach((attachment) => {
+                  attachmentFormData.append("attachments", attachment);
+                });
+                await fetch("/api/posts/attachments", {
+                  method: "POST",
+                  body: attachmentFormData,
+                }).then((res) => {
+                  if (res.ok) {
+                    router.push("/posts");
+                  } else {
+                    alert("Error");
+                  }
+                });
+              }
             } else {
               alert("Error");
             }
