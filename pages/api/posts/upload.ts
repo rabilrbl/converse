@@ -41,7 +41,7 @@ export default async function handle(
     if (post.authorId !== Number.parseInt(session.user.id)) {
       return res.status(403).json({ message: "Forbidden" });
     }
-    const banner = req.file;
+    const banner = (req as any).file;
     const result = await prisma.posts.update({
       where: { id: postId },
       data: {
